@@ -23,15 +23,6 @@ export enum Genre {
   DETECTIVE = 'детектив',
 }
 
-export enum MoviePersonTypeEnum {
-  ACTOR = 'АКТЕР',
-  COMPOSER = 'КОМПОЗИТОР',
-  DIRECTOR = 'РЕЖИССЕР',
-  OPERATOR = 'ОПЕРАТОР',
-  PRODUCER = 'ПРОДЮСЕР',
-  WRITER = 'СЦЕНАРИСТ',
-}
-
 export enum Country {
   RUSSIA = 'Россия',
   USA = 'США',
@@ -74,4 +65,12 @@ export enum PlanType {
   MONTH = '30 дней',
   HALF_YEAR = '180 дней',
   YEAR = '360 дней',
+}
+
+export enum AgeRating {
+  G = '0+',
+  PG = '6+',
+  PG13 = '12+',
+  R = '16+',
+  NC17 = '18+',
 }

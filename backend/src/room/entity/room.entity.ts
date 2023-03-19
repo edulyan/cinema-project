@@ -3,10 +3,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IRoomSeat } from '../../common/interfaces';
 import { Session } from '../../session/entity/session.entity';
 import { Cinema } from '../../cinema/entity/cinema.entity';
 
@@ -18,16 +17,13 @@ export class Room {
   @Column()
   number: number;
 
-  @Column('polygon', { array: true })
-  room_seats: IRoomSeat[][];
-
   @ManyToOne(() => Cinema, (cinema) => cinema.rooms, { onDelete: 'CASCADE' })
+  @JoinColumn()
   cinema: Cinema;
 
-  @OneToOne(() => Session, (session) => session.id, {
+  @OneToMany(() => Session, (session) => session.room, {
     onDelete: 'CASCADE',
-    eager: true,
+    cascade: true,
   })
-  @JoinColumn()
-  session: Session;
+  sessions: Session[];
 }

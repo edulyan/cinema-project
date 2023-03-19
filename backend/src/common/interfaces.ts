@@ -3,3 +3,8 @@ export interface IRoomSeat {
   column: number;
   sold: boolean;
 }
+
+export interface MoviePerson {
+  firstname: string;
+  lastname: string;
+}

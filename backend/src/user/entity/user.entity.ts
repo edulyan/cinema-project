@@ -1,14 +1,17 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { genSalt, hash } from 'bcrypt';
 import { UserRole } from '../../common/enums';
-import { Wallet } from '../../wallet/entity/wallet.entity';
+import { Ticket } from '../../ticket/entity/ticket.entity';
 
 @Entity()
 export class User {
@@ -21,11 +24,11 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
-  password: string;
+  passwordHash: string;
 
   @Column({ default: false })
   isSubscribed: boolean;
@@ -40,16 +43,22 @@ export class User {
   })
   role: UserRole;
 
-  @OneToOne(() => Wallet, (wallet) => wallet.id, {
+  @OneToMany(() => Ticket, (ticket) => ticket.buyer, {
     onDelete: 'CASCADE',
-    eager: true,
+    cascade: true,
   })
-  @JoinColumn()
-  wallet: Wallet;
+  tickets: Ticket[];
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
+
+  @BeforeInsert()
+  async setPassword() {
+    const salt = await genSalt(10);
+
+    this.passwordHash = await hash(this.passwordHash, salt);
+  }
 }

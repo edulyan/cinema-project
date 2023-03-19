@@ -1,94 +1,76 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
-import { User } from '../user/entity/user.entity';
-import { AuthDto } from './dto/auth.dto';
-import { CreateUserDto } from '../user/dto/createUser.dto';
-import { UserService } from '../user/user.service';
+import { compare, hash } from 'bcrypt';
 import { MailService } from '../mailer/mailer.service';
+import { UserRepository } from '../user/user.repository';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    private userRepository: UserRepository,
     private jwtService: JwtService,
-    private userService: UserService,
     private mailService: MailService,
   ) {}
 
-  async signIn(authDto: AuthDto) {
-    const useR = await this.userRepository.findOne({
-      where: { email: authDto.email },
-    });
+  async signIn({ email, password }: LoginDto) {
+    const foundUser = await this.userRepository.getByEmail(email);
 
-    if (!useR) {
+    if (!foundUser) {
       throw new HttpException(
         'Invalid email or password',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
-    const passCompare = await bcrypt.compare(authDto.password, useR.password);
+    const passCompare = await compare(password, foundUser.passwordHash);
 
     if (!passCompare) {
       throw new HttpException(
         'Invalid email or password',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
-    const token = await this.jwtService.signAsync({
-      id: useR.id,
-      role: useR.role,
-    });
-
-    const { password, ...user } = useR;
-
     return {
-      user,
-      token,
+      access_token: await this.jwtService.signAsync({
+        id: foundUser.id,
+        role: foundUser.role,
+      }),
     };
   }
 
-  async signUp(userDto: CreateUserDto) {
-    const email = await this.userRepository.findOne({
-      where: { email: userDto.email },
-    });
+  async signUp(dto: RegisterDto) {
+    const foundUser = await this.userRepository.getByEmail(dto.email);
 
-    if (email) {
-      throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    if (foundUser) {
+      throw new HttpException(
+        'User with this email already exists',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    const hashPass = await bcrypt.hash(userDto.password, 5);
+    const newUser = await this.userRepository.create(dto);
 
-    const data = await this.userService.createUser({
-      ...userDto,
-      password: hashPass,
-    });
-
-    const token = this.jwtService.sign({ id: data.id, role: data.role });
-
-    const { password, ...user } = data;
-
-    await this.mailService.signUpMail({ ...data, password: userDto.password });
+    await this.userRepository.save(newUser);
 
     return {
-      user,
-      token,
+      email: newUser.email,
     };
   }
 
-  async forgotPass(authDto: AuthDto) {
-    const user = await this.userService.getByEmail(authDto.email);
+  async forgotPass({ email, password }: LoginDto): Promise<boolean> {
+    const foundUser = await this.userRepository.getByEmail(email);
 
-    const hashPass = await bcrypt.hash(authDto.password, 5);
+    const hashPass = await hash(password, 5);
 
-    user.password = hashPass;
+    foundUser.passwordHash = hashPass;
 
-    await this.mailService.forgotPassMail(authDto);
+    await this.mailService.forgotPassMail(email);
 
-    return await this.userRepository.save(user);
+    await this.userRepository.save(foundUser);
+
+    return true;
   }
 }

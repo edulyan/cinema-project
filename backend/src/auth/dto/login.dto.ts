@@ -1,6 +1,6 @@
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
-export class AuthDto {
+export class LoginDto {
   @IsEmail({}, { message: 'Invalid email format' })
   readonly email: string;
 

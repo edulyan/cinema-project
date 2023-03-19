@@ -13,11 +13,15 @@ export class Cinema {
   @Column()
   address: string;
 
-  @OneToMany(() => Room, (room) => room.cinema, { onDelete: 'CASCADE' })
+  @OneToMany(() => Room, (room) => room.cinema, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   rooms: Room[];
 
   @OneToMany(() => Schedule, (schedule) => schedule.cinema, {
     onDelete: 'CASCADE',
+    cascade: true,
   })
   schedule: Schedule[];
 }

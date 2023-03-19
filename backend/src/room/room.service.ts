@@ -1,17 +1,26 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { IRoomSeat } from 'src/common/interfaces';
-import { Repository } from 'typeorm';
+import { RoomRepository } from './room.repository';
+import { CinemaRepository } from '../cinema/cinema.repository';
+import { CreateRoomDto } from './dto/room.dto';
 import { Room } from './entity/room.entity';
 
 @Injectable()
 export class RoomService {
   constructor(
-    @InjectRepository(Room) private roomRepository: Repository<Room>,
+    private readonly roomRepository: RoomRepository,
+    private readonly cinemaRepository: CinemaRepository,
   ) {}
 
+  async getAll(): Promise<Room[]> {
+    try {
+      return await this.roomRepository.getAll();
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async findRoomById(id: string): Promise<Room> {
-    const room = await this.roomRepository.findOneBy({ id: id });
+    const room = await this.roomRepository.getById(id);
 
     if (!room) {
       throw new HttpException('Room not found', HttpStatus.NOT_FOUND);
@@ -20,23 +29,22 @@ export class RoomService {
     return room;
   }
 
-  async createRoom(): Promise<IRoomSeat[][]> {
-    const resRoom: Array<IRoomSeat>[] = [];
-    const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  async createRoom(dto: CreateRoomDto): Promise<Room> {
+    const foundCinema = await this.cinemaRepository.getById(dto.cinemaId);
 
-    for (let i = 0; i < rows.length; i++) {
-      resRoom.push([]);
-      for (let j = 0; j < columns.length; j++) {
-        resRoom[i].push({ row: rows[i], column: columns[j], sold: false });
-      }
+    if (!foundCinema) {
+      throw new HttpException('Cinema not found', HttpStatus.NOT_FOUND);
     }
 
-    return resRoom;
+    const newRoom = await this.roomRepository.create(dto);
+
+    newRoom.cinema = foundCinema;
+
+    return await this.roomRepository.save(newRoom);
   }
 
   async deleteRoom(id: string): Promise<boolean> {
-    (await this.findRoomById(id)) || false;
+    await this.findRoomById(id);
 
     await this.roomRepository.delete(id);
 

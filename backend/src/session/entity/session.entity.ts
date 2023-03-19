@@ -2,10 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Room } from '../../room/entity/room.entity';
+import { IRoomSeat } from '../../common/interfaces';
+import { Ticket } from '../../ticket/entity/ticket.entity';
 
 @Entity()
 export class Session {
@@ -15,10 +18,18 @@ export class Session {
   @Column({ type: 'timestamp' })
   sessionTime: Date;
 
-  @OneToOne(() => Room, (room) => room.id, {
+  @Column('simple-json', { array: false })
+  room_seats: IRoomSeat[];
+
+  @ManyToOne(() => Room, (room) => room.sessions, {
     onDelete: 'CASCADE',
-    eager: true,
   })
   @JoinColumn()
   room: Room;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.session, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  tickets: Ticket;
 }

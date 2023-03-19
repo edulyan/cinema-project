@@ -16,24 +16,25 @@ import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { User } from '../user/entity/user.entity';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto/auth.dto';
-import { CreateUserDto } from '../user/dto/createUser.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { UserRepository } from '../user/user.repository';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-    private readonly authService: AuthService,
+    private userRepository: UserRepository,
+    private authService: AuthService,
     private jwtService: JwtService,
   ) {}
 
   @Post('/login')
   @UsePipes(ValidationPipe)
   async signIn(
-    @Body() authDto: AuthDto,
+    @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const jwt = await this.authService.signIn(authDto);
+    const jwt = await this.authService.signIn(dto);
     res.cookie('jwtToken', jwt, { httpOnly: true });
 
     return jwt;
@@ -41,8 +42,8 @@ export class AuthController {
 
   @Post('/register')
   @UsePipes(ValidationPipe)
-  async signUp(@Body() userDto: CreateUserDto) {
-    return await this.authService.signUp(userDto);
+  async signUp(@Body() dto: RegisterDto) {
+    return await this.authService.signUp(dto);
   }
 
   @Get('user')
@@ -60,18 +61,16 @@ export class AuthController {
       throw new HttpException('No data in cookies', HttpStatus.UNAUTHORIZED);
     }
 
-    const user = await this.userRepository.findOne({
-      where: { id: data['id'] },
-    });
+    const user = await this.userRepository.getById(data['id']);
 
-    const { password, ...result } = user;
+    const { passwordHash, ...result } = user;
 
     return result;
   }
 
   @Post('/forgotPass')
-  async forgotPass(@Body() authDto: AuthDto) {
-    return await this.authService.forgotPass(authDto);
+  async forgotPass(@Body() dto: LoginDto) {
+    return await this.authService.forgotPass(dto);
   }
 
   @Post('/logout')
