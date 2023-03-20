@@ -51,12 +51,10 @@ export class AuthService {
       );
     }
 
-    const newUser = await this.userRepository.create(dto);
-
-    await this.userRepository.save(newUser);
+    await this.userRepository.create(dto);
 
     return {
-      email: newUser.email,
+      email: dto.email,
     };
   }
 

@@ -16,7 +16,7 @@ export class UserService {
     }
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getById(id: string): Promise<User> {
     const foundUser = await this.userRepository.getById(id);
 
     if (!foundUser) {
@@ -40,13 +40,13 @@ export class UserService {
     id: string,
     updUserDto: UpdUserDto,
   ): Promise<UpdateResult | void> {
-    await this.getUserById(id);
+    await this.getById(id);
 
     return await this.userRepository.update(id, updUserDto);
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    await this.getUserById(id);
+    await this.getById(id);
 
     await this.userRepository.delete(id);
 

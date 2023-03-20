@@ -3,7 +3,9 @@ import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdUserDto } from './dto/updUser.dto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserRepository {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,

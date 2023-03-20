@@ -31,5 +31,5 @@ export class Session {
     onDelete: 'CASCADE',
     cascade: true,
   })
-  tickets: Ticket;
+  tickets: Ticket[];
 }

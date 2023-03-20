@@ -11,17 +11,17 @@ export class UserController {
     return await this.userService.getUsers();
   }
 
-  @Get('id')
+  @Get(':id')
   async getUserById(@Param('id') id: string) {
-    return await this.userService.getUserById(id);
+    return await this.userService.getById(id);
   }
 
-  @Put('id')
+  @Put(':id')
   async updUser(@Param('id') id: string, @Body() updUserDto: UpdUserDto) {
     return await this.userService.updUser(id, updUserDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
   }
