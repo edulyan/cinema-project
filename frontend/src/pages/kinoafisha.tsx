@@ -1,15 +1,15 @@
-import Home from "@/components/screens/home/Home";
+import { GetStaticProps, NextPage } from "next";
+import KinoAfisha from "@/components/screens/kinoafisha/Kinoafisha";
 import { IGetMoviesRes } from "@/models/movie";
 import { MovieService } from "@/services/movie.service";
-import { GetStaticProps, NextPage } from "next";
 
-const HomePage: NextPage<IGetMoviesRes> = ({ movies, length }) => {
-  return <Home movies={movies} length={length} />;
+const KinoAfishaPage: NextPage<IGetMoviesRes> = ({ movies, length }) => {
+  return <KinoAfisha movies={movies} />;
 };
 
 export const getStaticProps: GetStaticProps<IGetMoviesRes> = async () => {
   try {
-    const data = await MovieService.getAll({ orderBy: "DESC", take: "5" });
+    const data = await MovieService.getAll({ orderBy: null, take: "0" });
 
     return {
       props: {
@@ -30,4 +30,4 @@ export const getStaticProps: GetStaticProps<IGetMoviesRes> = async () => {
   }
 };
 
-export default HomePage;
+export default KinoAfishaPage;

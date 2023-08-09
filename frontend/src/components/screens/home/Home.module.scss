@@ -1,0 +1,159 @@
+/* .home {
+  @apply mx-auto text-center mt-5 bg-zinc-600 text-white w-5/6;
+} */
+
+.home_main {
+  @apply fixed top-0 left-0 right-0 bottom-0 overflow-hidden;
+
+  .img {
+    @apply -z-10 object-cover brightness-50 w-full h-full;
+  }
+
+  .containers {
+    @apply absolute w-full top-1/3;
+
+    .fir_row {
+      @apply flex items-center mt-8 text-white;
+
+      .slider_count {
+        @apply flex-initial mt-14 ml-24 w-1/4 inline-flex;
+
+        .current_numb {
+          @apply text-xl my-auto text-center p-2 w-12 h-12 border border-solid border-white rounded-full;
+        }
+
+        .slash {
+          @apply text-5xl my-auto rotate-20 ml-6;
+        }
+
+        .amount_numb {
+          @apply text-xl ml-6 my-auto text-center p-2 w-12 h-12 border border-solid border-white rounded-full;
+        }
+      }
+
+      .info {
+        @apply flex-auto w-9/12;
+
+        .title {
+          @apply text-9xl font-bold tracking-wider leading-14;
+        }
+
+        .details_flex {
+          @apply inline-flex mt-14;
+
+          h6 {
+            @apply text-xs;
+          }
+
+          .director {
+            @apply font-bold px-6 py-3 border border-solid border-white rounded-2xl;
+          }
+
+          .year {
+            @apply ml-1 font-bold px-5 py-3 border border-solid border-white rounded-2xl;
+          }
+
+          .duration {
+            @apply ml-1 font-bold px-4 py-3 border border-solid border-white rounded-2xl;
+          }
+        }
+      }
+    }
+
+    .sec_row {
+      @apply flex mt-48 ml-24 text-white;
+
+      .slider {
+        @apply flex-initial mt-24 w-1/4;
+
+        .prev {
+          @apply w-20 rounded-xl border-white;
+
+          &:hover {
+            @apply bg-white text-black;
+          }
+        }
+
+        .next {
+          @apply ml-2 w-20 rounded-xl;
+
+          &:hover {
+            @apply bg-white text-black;
+          }
+        }
+      }
+
+      .trailer {
+        @apply flex-auto;
+
+        .trailer_div {
+          @apply ml-2 mt-14 inline-flex;
+
+          .up_icon {
+            @apply w-4 h-4 mt-0.5 text-base bg-white text-black rounded-full;
+          }
+
+          .trailer_title {
+            @apply ml-1 text-sm;
+          }
+        }
+
+        .trailer_btn {
+          @apply mt-4 w-48 h-10 border border-solid border-white rounded-full;
+
+          &:hover {
+            @apply bg-black border-black duration-300;
+          }
+
+          .play_btn {
+            @apply ml-18 w-10 h-10 bg-white text-black rounded-full;
+          }
+        }
+      }
+
+      .actors {
+        @apply flex-auto;
+
+        .actors_div {
+          @apply ml-2 mt-14 inline-flex;
+
+          .up_icon {
+            @apply w-4 h-4 mt-0.5 text-base bg-white text-black rounded-full;
+          }
+
+          .actors_title {
+            @apply ml-1 text-sm;
+          }
+        }
+
+        .actors_circles {
+          @apply mt-4;
+
+          .circles {
+            @apply relative inline-flex ml-2 w-10 h-10 bg-white text-black rounded-full;
+
+            .letter {
+              @apply absolute ml-3 mt-1 text-center text-2xl;
+            }
+
+            .number {
+              @apply absolute mx-1 mt-1 text-center text-2xl;
+            }
+          }
+        }
+      }
+
+      .toMovie {
+        @apply flex-auto mt-18 text-right mr-24;
+
+        .btnToBuy {
+          @apply text-sm w-44 h-16 rounded-2xl;
+
+          &:hover {
+            @apply bg-white text-black;
+          }
+        }
+      }
+    }
+  }
+}

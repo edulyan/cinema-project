@@ -15,7 +15,11 @@ const Menu: FC = () => {
             {menuList.map((item) => (
               <li key={item.name}>
                 <Link
-                  className={pathname === item.link ? styles.active : ""}
+                  className={`${
+                    pathname === item.link && item.link === "/feature"
+                      ? styles.yellow_active
+                      : ""
+                  } ${pathname === item.link ? styles.active : ""}`}
                   key={item.link}
                   href={item.link}
                 >

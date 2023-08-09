@@ -5,7 +5,7 @@ interface IMenuLink {
 
 export const menuList: IMenuLink[] = [
   {
-    link: "/",
+    link: "/kinoafisha",
     name: "Фильмы",
   },
   {

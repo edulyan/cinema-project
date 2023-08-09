@@ -1,0 +1,45 @@
+.cinemaList_main {
+  .img {
+    @apply fixed -z-10 w-screen h-screen brightness-50;
+  }
+
+  .cinema_list {
+    @apply relative w-10/12 mx-auto py-96 grid grid-cols-3 gap-10 text-white;
+
+    .cinema_div {
+      @apply py-8 px-5 bg-gray-500 bg-opacity-10 border border-solid rounded-lg transition ease-in-out;
+
+      &:hover {
+        @apply cursor-pointer duration-200 transform scale-110 bg-red-600 opacity-100 border-none;
+      }
+
+      .cinema_name {
+        @apply text-2xl font-bold;
+      }
+
+      .cinema_address {
+        @apply mt-2;
+
+        .address_icon {
+          @apply inline-block;
+        }
+
+        .address {
+          @apply inline-block ml-2;
+        }
+      }
+
+      .cinema_subway {
+        @apply mt-2;
+
+        .subway_icon {
+          @apply inline-block;
+        }
+
+        .subway {
+          @apply inline-block ml-2;
+        }
+      }
+    }
+  }
+}

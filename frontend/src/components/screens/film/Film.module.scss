@@ -1,0 +1,124 @@
+.schedule_input {
+  @apply flex ml-4 mt-1 text-3xl border-red-500 bg-black text-red-700;
+
+  .triangle_icon {
+    @apply ml-2 my-auto;
+  }
+}
+
+.main {
+  @apply relative w-full h-full;
+
+  .main_block {
+    @apply mx-auto text-center text-white bg-black w-3/5 h-full;
+
+    .bg_trailer {
+      @apply relative text-center flex items-center justify-center;
+
+      .trailer {
+        @apply relative -mt-44 m-auto w-max;
+      }
+
+      .shadow {
+        @apply absolute text-center justify-center w-full h-full;
+        box-shadow: inset 10px -60px 130px 130px rgba(0, 0, 0, 1);
+      }
+    }
+
+    .movie_info {
+      @apply relative -mt-44 flex items-start text-left m-auto;
+
+      .movie_img_div {
+        @apply relative flex-initial w-1/4;
+      }
+
+      .div_none {
+        @apply flex-none w-7;
+      }
+
+      .movie_info_main {
+        @apply flex-auto w-2/4;
+
+        .title_year {
+          @apply font-bold text-5xl;
+        }
+
+        .ageRating {
+          @apply mt-3 text-lg text-gray-500;
+        }
+
+        .description {
+          @apply mt-3 text-xl;
+        }
+
+        .toTrailer {
+          @apply mt-8;
+
+          .btnToTrailer {
+            @apply w-2/5 h-12 rounded-3xl bg-white text-black;
+
+            &:hover {
+              @apply bg-red-600 text-white;
+            }
+
+            .play_btn {
+              @apply text-3xl mr-2;
+            }
+
+            .title {
+              @apply text-base;
+            }
+          }
+        }
+
+        .movie_about {
+          @apply text-xl mt-8;
+
+          .about {
+            @apply py-2;
+          }
+
+          .movie_flex {
+            @apply flex;
+
+            .left {
+              @apply flex-auto py-2 w-1/4 text-sm text-gray-500;
+            }
+
+            .right {
+              @apply flex-auto py-2 w-3/4 text-sm;
+            }
+          }
+        }
+      }
+
+      .movie_actors {
+        @apply block w-1/6 mt-48;
+
+        .title {
+          @apply text-lg font-bold;
+        }
+
+        .actors_list {
+          @apply mt-4 text-sm leading-6;
+        }
+      }
+    }
+
+    .schedule {
+      @apply mt-10;
+
+      .date {
+        @apply flex text-left w-2/3;
+
+        .schedule_title {
+          @apply text-4xl;
+        }
+      }
+
+      .line {
+        @apply mt-9 h-0.5 mx-auto bg-gradient-to-r from-red-600 to-gray-500;
+      }
+    }
+  }
+}

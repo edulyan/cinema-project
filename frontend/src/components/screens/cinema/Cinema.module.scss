@@ -1,0 +1,63 @@
+.schedule_input {
+  @apply flex ml-4 mt-1 text-3xl border-red-500 bg-black text-red-700;
+
+  .triangle_icon {
+    @apply ml-2 my-auto;
+  }
+}
+
+.cinema_main {
+  @apply relative w-full h-full;
+
+  .main_block {
+    @apply mx-auto text-white py-44 w-3/5 h-full;
+
+    .cinema_info {
+      @apply text-white py-5;
+
+      .cinema_name {
+        @apply text-5xl font-bold;
+      }
+
+      .cinema_address {
+        @apply text-xl mt-2;
+
+        .address_icon {
+          @apply inline-block;
+        }
+
+        .address {
+          @apply inline-block ml-2;
+        }
+      }
+
+      .cinema_subway {
+        @apply text-xl mt-2;
+
+        .subway_icon {
+          @apply inline-block;
+        }
+
+        .subway {
+          @apply inline-block ml-2;
+        }
+      }
+    }
+
+    .schedule {
+      @apply mt-24;
+
+      .date {
+        @apply flex text-left w-2/3;
+
+        .schedule_title {
+          @apply text-4xl;
+        }
+      }
+
+      .line {
+        @apply mt-9 h-0.5 mx-auto bg-gradient-to-r from-red-600 to-gray-500;
+      }
+    }
+  }
+}

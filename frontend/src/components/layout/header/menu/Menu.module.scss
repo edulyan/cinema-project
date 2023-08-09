@@ -5,7 +5,11 @@
     @apply flex items-center mx-auto;
 
     .active {
-      @apply text-orange-300;
+      @apply text-red-600;
+    }
+
+    .yellow_active {
+      @apply text-yellow-600;
     }
 
     > nav {
@@ -23,7 +27,7 @@
             &::after {
               content: "";
               @apply absolute left-0 -bottom-3 h-0.5 w-0
-             bg-orange-300 transition-all duration-300;
+             bg-white transition-all duration-300;
             }
 
             &:hover::after {

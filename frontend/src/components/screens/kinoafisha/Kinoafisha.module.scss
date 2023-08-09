@@ -1,0 +1,51 @@
+.main {
+  @apply relative w-full h-full bg-black;
+
+  .main_block {
+    @apply py-48 w-90% mx-auto text-white;
+
+    .main_title {
+      @apply text-4xl;
+
+      h1 {
+        @apply w-1/5;
+      }
+    }
+
+    .moviesList {
+      @apply grid grid-cols-5 gap-x-20 gap-y-20 mt-20;
+
+      .movie_div {
+        .img_div {
+          .btn {
+            @apply bg-black w-fit h-max transition duration-150 ease-in-out;
+
+            .img {
+              @apply shadow-red-600 shadow-2xl rounded-xl;
+            }
+          }
+        }
+
+        .movie_info {
+          @apply mt-11 text-center;
+
+          .ageRating {
+            @apply text-gray-500;
+          }
+
+          .movie_title {
+            @apply mt-5 w-3/4 mx-auto text-2xl font-bold uppercase;
+          }
+
+          .line {
+            @apply mt-0.5 h-0.5 w-3/4 mx-auto bg-gradient-to-r from-red-600 to-gray-500;
+          }
+
+          .genre {
+            @apply mt-5 text-gray-500;
+          }
+        }
+      }
+    }
+  }
+}

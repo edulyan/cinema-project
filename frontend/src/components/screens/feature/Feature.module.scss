@@ -1,0 +1,170 @@
+.main {
+  @apply relative w-full h-full;
+
+  .main_block {
+    @apply py-32 w-90% mx-auto text-white;
+
+    .timer {
+      @apply mx-auto text-center;
+
+      h2 {
+        @apply text-lg font-bold;
+      }
+
+      .countdown {
+        @apply flex justify-center content-center items-center gap-10  mt-5;
+      }
+    }
+
+    .main_title {
+      @apply mt-10 text-center text-4xl font-bold;
+    }
+
+    .popular {
+      @apply mt-8 flex items-center mx-auto w-2/4;
+
+      .popular_div {
+        @apply mx-auto;
+
+        .movie_img {
+          @apply mx-auto rounded-md;
+          box-shadow: 0 0 200px rgba(179, 157, 50, 0.7);
+        }
+
+        .movie_info {
+          @apply mt-5 text-center;
+
+          .movie_title {
+            @apply mt-5 mx-auto text-lg font-bold uppercase;
+          }
+
+          .line {
+            @apply mt-0.5 h-0.5 w-3/4 mx-auto bg-gradient-to-r from-yellow-600 to-gray-500;
+          }
+
+          .votes {
+            @apply mt-5 py-2 border border-red-300 rounded-lg;
+          }
+        }
+      }
+    }
+
+    .line {
+      @apply mt-5 h-0.5 mx-auto bg-gradient-to-r from-yellow-600 to-gray-500;
+    }
+
+    .movies_list {
+      @apply grid grid-cols-5 gap-x-20 gap-y-20 mt-20;
+
+      .movie_div {
+        .movie_img {
+          @apply mx-auto rounded-md;
+
+          .btn {
+            @apply bg-black w-fit h-max transition duration-150 ease-in-out;
+
+            .img {
+              @apply shadow-red-600 shadow-2xl rounded-xl;
+            }
+          }
+        }
+
+        .movie_info {
+          @apply mt-5 text-center;
+
+          .movie_title {
+            @apply mt-5 w-3/4 mx-auto text-lg font-bold uppercase;
+          }
+
+          .line {
+            @apply mt-0.5 h-0.5 w-3/4 mx-auto bg-gradient-to-r from-yellow-600 to-gray-500;
+          }
+
+          .genre {
+            @apply mt-5 text-gray-500;
+          }
+
+          .votes {
+            @apply mt-3;
+          }
+
+          .toVote {
+            @apply mt-5;
+
+            .btnToVote {
+              @apply w-3/5 h-12 rounded-3xl bg-yellow-500 text-black;
+
+              &:hover {
+                @apply bg-red-600 text-white;
+              }
+
+              .title {
+                @apply text-base;
+              }
+            }
+          }
+
+          .toBuyAll {
+            @apply mt-5;
+
+            .btnToBuyAll {
+              @apply w-3/5 h-12 rounded-3xl bg-white text-black;
+
+              &:hover {
+                @apply bg-red-600 text-white;
+              }
+
+              .title {
+                @apply text-base;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.line_top {
+  @apply h-0.5 mx-auto bg-gradient-to-r from-red-600 to-gray-500;
+}
+
+.modal {
+  @apply h-4/6 bg-stone-900;
+
+  .modal_header {
+    @apply text-center py-4;
+
+    .top_header {
+      .title {
+        @apply inline-block text-white;
+      }
+
+      .ageRating {
+        @apply inline-block ml-3 w-10 h-6 bg-red-600 text-white;
+      }
+    }
+  }
+
+  .middle_div {
+    @apply flex justify-center content-center items-center gap-20 py-5;
+
+    .movie_modal_img {
+    }
+
+    .selects_list {
+      @apply flex flex-col justify-center items-center content-center gap-5;
+
+      .selects {
+        @apply w-52;
+      }
+    }
+  }
+
+  .bottom_div {
+    @apply py-3 px-2 text-right;
+
+    .btn_disabled {
+    }
+  }
+}

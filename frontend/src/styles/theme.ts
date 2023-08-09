@@ -6,12 +6,12 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({
+export const theme = extendTheme({
   config,
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
-        bg: mode("gray.800", "white")(props),
+        bg: mode("black", "black")(props),
         transitionProperty: "background-color",
       },
     }),

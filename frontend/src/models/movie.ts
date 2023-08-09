@@ -1,4 +1,7 @@
+import { ParsedUrlQuery } from "querystring";
 import { ISchedule } from "./schedule";
+import { ITicket } from "./ticket";
+import { IUser } from "./user";
 
 export interface IMovie {
   id: string;
@@ -8,16 +11,46 @@ export interface IMovie {
   year: number;
   slug: string;
   ageRating: AgeRating;
-  duration: string;
+  duration: number;
   image?: string;
+  imgVert?: string;
   trailer?: string;
   countries: Country[];
   genre: Genre[];
   actors: string[];
+  votes: IVote[];
   schedule: ISchedule[];
+  tickets: ITicket[];
   createdDate: Date;
   updatedDate: Date;
 }
+
+export interface IVote {
+  id: string;
+  user: IUser;
+  movie: IMovie;
+  createdDate: Date;
+}
+
+export interface IMovieParam extends ParsedUrlQuery {
+  slug: string;
+}
+
+export interface IGetMoviesReq {
+  orderBy: FindOptionsOrderValue | null;
+  take: string;
+}
+
+export interface IGetMoviesRes {
+  movies: IMovie[];
+  length?: number;
+}
+
+export interface IGetMovieRes {
+  movie: IMovie;
+}
+
+export type FindOptionsOrderValue = "ASC" | "DESC" | "asc" | "desc";
 
 export enum AgeRating {
   G = "0+",
