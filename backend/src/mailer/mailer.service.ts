@@ -11,12 +11,12 @@ export class MailService {
       .sendMail({
         to: email,
         subject: 'Registration',
-        text: `Congratulations, you have successfully registered on our website!
+        text: `Поздравляю, вы зарегестрировались в нашем приложении
             
-            Your account details:
+            Ваши данные:
             
-            login: ${email}
-            password: ${password}`,
+            Логин: ${email}
+            Пароль: ${password}`,
       })
       .catch((e) => {
         throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -27,8 +27,8 @@ export class MailService {
     await this.mailerService
       .sendMail({
         to: email,
-        subject: 'Changing the password',
-        text: `Your password has been changed!`,
+        subject: 'Поменять пароль',
+        text: `Ваш пароль был изменен`,
       })
       .catch((e) => {
         throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);

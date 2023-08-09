@@ -3,15 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { genSalt, hash } from 'bcrypt';
 import { UserRole } from '../../common/enums';
 import { Ticket } from '../../ticket/entity/ticket.entity';
+import { Vote } from '../../vote/entity/vote.entity';
 
 @Entity()
 export class User {
@@ -30,18 +29,15 @@ export class User {
   @Column()
   passwordHash: string;
 
-  @Column({ default: false })
-  isSubscribed: boolean;
-
-  @Column({ default: null })
-  next_payment_date: string;
-
   @Column({
     type: 'enum',
     enum: UserRole,
     default: UserRole.USER,
   })
   role: UserRole;
+
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes: Vote[];
 
   @OneToMany(() => Ticket, (ticket) => ticket.buyer, {
     onDelete: 'CASCADE',

@@ -1,0 +1,17 @@
+.profile {
+  @apply flex items-center mr-10 mx-auto col-span-2;
+
+  .goAuth {
+    @apply relative text-xl;
+
+    &::after {
+      content: "";
+      @apply absolute left-0 -bottom-3 h-0.5 w-0
+       bg-red-500 transition-all duration-300;
+    }
+
+    &:hover::after {
+      @apply w-full;
+    }
+  }
+}

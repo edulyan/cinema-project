@@ -1,0 +1,7 @@
+.logo {
+  @apply flex items-center mx-28 text-center col-span-2;
+
+  .logo_title {
+    @apply text-3xl text-white;
+  }
+}

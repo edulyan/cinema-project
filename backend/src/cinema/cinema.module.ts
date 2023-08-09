@@ -10,7 +10,7 @@ import { CinemaRepository } from './cinema.repository';
 @Module({
   controllers: [CinemaController],
   providers: [CinemaService, CinemaRepository],
-  exports: [CinemaRepository],
+  exports: [CinemaService, CinemaRepository],
   imports: [TypeOrmModule.forFeature([Cinema, Room, Schedule])],
 })
 export class CinemaModule {}

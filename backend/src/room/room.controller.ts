@@ -13,7 +13,7 @@ export class RoomController {
 
   @Get('id')
   async getRoomById(@Param('id') id: string) {
-    return await this.roomService.findById(id);
+    return await this.roomService.getById(id);
   }
 
   @Post()

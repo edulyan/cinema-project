@@ -1,21 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { RoomRepository } from '../room/room.repository';
 import { SessionRepository } from './session.repository';
-
 import { IRoomSeat } from '../common/interfaces';
 import { CreateSessionDto } from './dto/createSession.dto';
 import { Session } from './entity/session.entity';
+import { ScheduleRepository } from '../schedule/schedule.repository';
+import { findAvailableRooms } from './helpers/filterRoom';
+import { setEndTime, setStartTimeDefault } from './helpers/setTime';
 
 @Injectable()
 export class SessionService {
   constructor(
     private readonly sessionRepository: SessionRepository,
-    private readonly roomRepository: RoomRepository,
+    private readonly scheduleRepository: ScheduleRepository,
   ) {}
 
   async getAll(): Promise<Session[]> {
     try {
-      return await this.sessionRepository.getAll();
+      return await this.sessionRepository.getAll({ relations: ['schedule'] });
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -31,12 +32,19 @@ export class SessionService {
     return foundSession;
   }
 
-  async create(dto: CreateSessionDto): Promise<Session> {
+  async create({ scheduleId }: CreateSessionDto) {
     try {
-      const foundRoom = await this.roomRepository.getById(dto.roomId);
+      const foundSchedule = await this.scheduleRepository.getById(scheduleId, {
+        relations: ['cinema.rooms.sessions', 'movie', 'sessions'],
+      });
 
-      if (!foundRoom) {
-        throw new HttpException('Room not found', HttpStatus.NOT_FOUND);
+      const startTime = setStartTimeDefault(foundSchedule);
+      const endTime = setEndTime(foundSchedule, startTime);
+
+      const availableRooms = findAvailableRooms(foundSchedule, startTime);
+
+      if (!availableRooms) {
+        return;
       }
 
       const resRoom: Array<IRoomSeat> = [];
@@ -45,21 +53,30 @@ export class SessionService {
 
       for (let i = 0; i < rows.length; i++) {
         for (let j = 0; j < columns.length; j++) {
-          resRoom.push({ row: rows[i], column: columns[j], sold: false });
+          resRoom.push({
+            row: rows[i],
+            column: columns[j],
+            sold: false,
+            price: 400,
+          });
         }
       }
 
-      const createSession = await this.sessionRepository.create(dto);
+      const createSession = await this.sessionRepository.create({
+        startTime,
+        endTime,
+        scheduleId,
+      });
 
-      createSession.room = foundRoom;
+      createSession.room = availableRooms[0];
       createSession.room_seats = resRoom;
+
+      foundSchedule.sessions.push(createSession);
+      await this.scheduleRepository.save(foundSchedule);
 
       return this.sessionRepository.save(createSession);
     } catch (error) {
-      throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

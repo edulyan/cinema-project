@@ -1,0 +1,33 @@
+.signUp {
+  @apply mt-60 mx-auto text-center w-1/5;
+
+  .title {
+    @apply font-medium text-2xl mb-5;
+  }
+
+  .input {
+    @apply mt-5;
+  }
+
+  .btn_div {
+    @apply mt-5;
+
+    .btn_signIn {
+      @apply mr-10;
+
+      &:hover {
+        @apply underline;
+      }
+    }
+
+    .btn_signUp {
+      &:hover {
+        @apply underline;
+      }
+    }
+  }
+
+  .enter_div {
+    @apply mt-10;
+  }
+}

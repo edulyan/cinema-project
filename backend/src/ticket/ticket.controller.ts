@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CreateTicketDto } from './dto/createTicket.dto';
 import { TicketService } from './ticket.service';
 
@@ -16,9 +27,10 @@ export class TicketController {
     return await this.ticketService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() dto: CreateTicketDto) {
-    return await this.ticketService.create(dto);
+  async buyTicket(@Body() dto: CreateTicketDto, @Req() req: Request) {
+    return await this.ticketService.buyTicket(dto, req);
   }
 
   @Delete(':id')

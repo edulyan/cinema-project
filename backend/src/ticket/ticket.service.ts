@@ -1,20 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Request } from 'express';
 import { TicketRepository } from './ticket.repository';
 import { UserService } from '../user/user.service';
-import { SessionService } from '../session/session.service';
 import { CreateTicketDto } from './dto/createTicket.dto';
 import { Ticket } from './entity/ticket.entity';
+import { SessionRepository } from '../session/session.repository';
+import { MovieRepository } from 'src/movie/movie.repository';
+import { IRoomSeat } from '../common/interfaces';
 
 @Injectable()
 export class TicketService {
   constructor(
     private readonly ticketRepository: TicketRepository,
     private readonly userService: UserService,
-    private readonly sessionService: SessionService,
+    private readonly sessionRepository: SessionRepository,
+    private readonly movieRepository: MovieRepository,
   ) {}
 
   async getAll(): Promise<Ticket[]> {
-    return await this.ticketRepository.getAll();
+    return await this.ticketRepository.getAll({ relations: ['movie'] });
   }
 
   async getById(id: string): Promise<Ticket> {
@@ -27,16 +31,41 @@ export class TicketService {
     return foundTicket;
   }
 
-  async create({ userId, sessionId }: CreateTicketDto): Promise<Ticket> {
-    const foundUser = await this.userService.getById(userId);
-    const foundSession = await this.sessionService.getById(sessionId);
+  async buyTicket({ sessionId, seats }: CreateTicketDto, req: Request) {
+    try {
+      const user = await this.userService.getById(req['user'].id);
+      const session = await this.sessionRepository.getById(sessionId, {
+        relations: ['schedule.movie'],
+      });
 
-    const newTicket = await this.ticketRepository.create();
+      session.room_seats.forEach((roomSeat: IRoomSeat) => {
+        const matchingUpdatedSeat = seats.find(
+          (updatedSeat: IRoomSeat) =>
+            updatedSeat.row === roomSeat.row &&
+            updatedSeat.column === roomSeat.column,
+        );
 
-    newTicket.buyer = foundUser;
-    newTicket.session = foundSession;
+        if (matchingUpdatedSeat) {
+          roomSeat.sold = true;
+        }
+      });
 
-    return await this.ticketRepository.save(newTicket);
+      console.log(session);
+
+      const newTicket = await this.ticketRepository.create();
+
+      newTicket.movie = session.schedule.movie;
+      newTicket.buyer = user;
+      newTicket.session = session;
+      newTicket.seats = seats;
+
+      await this.sessionRepository.save(session);
+
+      return await this.ticketRepository.save(newTicket);
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async delete(id: string): Promise<boolean> {

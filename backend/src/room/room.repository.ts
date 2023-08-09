@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { CreateRoomDto } from './dto/room.dto';
 import { Room } from './entity/room.entity';
 
@@ -10,14 +10,16 @@ export class RoomRepository {
     @InjectRepository(Room) private roomrepository: Repository<Room>,
   ) {}
 
-  async getAll() {
-    return await this.roomrepository.find({
-      relations: ['cinema', 'sessions'],
-    });
+  async getAll(options?: FindManyOptions) {
+    return await this.roomrepository.find(options);
   }
 
-  async getById(id: string) {
-    return await this.roomrepository.findOne({ where: { id: id } });
+  async getAllBy(options?: FindOptionsWhere<Room>) {
+    return await this.roomrepository.findBy(options);
+  }
+
+  async getById(id: string, options?: FindManyOptions<Room>) {
+    return await this.roomrepository.findOne({ where: { id: id }, ...options });
   }
 
   async create(dto: CreateRoomDto) {

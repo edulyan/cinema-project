@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { Schedule } from '../../schedule/entity/schedule.entity';
 import { AgeRating, Country, Genre } from '../../common/enums';
+import { Ticket } from '../../ticket/entity/ticket.entity';
+import { Vote } from '../../vote/entity/vote.entity';
 
 @Entity()
 export class Movie {
@@ -26,6 +28,9 @@ export class Movie {
   @Column()
   year: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column({
     type: 'enum',
     enum: AgeRating,
@@ -33,13 +38,19 @@ export class Movie {
   ageRating: AgeRating;
 
   @Column()
-  duration: string;
+  duration: number;
 
   @Column({ nullable: true })
   image: string;
 
   @Column({ nullable: true })
+  imgVert: string;
+
+  @Column({ nullable: true })
   trailer: string;
+
+  @Column({ nullable: true })
+  isFeature: boolean;
 
   @Column({
     type: 'enum',
@@ -58,11 +69,20 @@ export class Movie {
   @Column({ type: 'simple-array' })
   actors: string[];
 
+  @OneToMany(() => Vote, (vote) => vote.movie)
+  votes: Vote[];
+
   @OneToMany(() => Schedule, (schedule) => schedule.movie, {
     onDelete: 'CASCADE',
     cascade: true,
   })
   schedule: Schedule[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.movie, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  tickets: Ticket[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;

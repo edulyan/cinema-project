@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Room } from '../../room/entity/room.entity';
 import { Schedule } from '../../schedule/entity/schedule.entity';
+import { CinemaSlug } from '../../common/enums';
 
 @Entity()
 export class Cinema {
@@ -12,6 +13,16 @@ export class Cinema {
 
   @Column()
   address: string;
+
+  @Column({ type: 'simple-array' })
+  subway: string[];
+
+  @Column({
+    unique: true,
+    type: 'enum',
+    enum: CinemaSlug,
+  })
+  slug: CinemaSlug;
 
   @OneToMany(() => Room, (room) => room.cinema, {
     onDelete: 'CASCADE',

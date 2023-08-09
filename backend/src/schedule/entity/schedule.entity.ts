@@ -18,15 +18,19 @@ export class Schedule {
   @Column({ type: 'timestamp' })
   date: Date;
 
-  @ManyToOne(() => Cinema, (cinema) => cinema.schedule, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Cinema, (cinema) => cinema.schedule, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   cinema: Cinema;
 
-  @ManyToOne(() => Movie, (movie) => movie.schedule, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Movie, (movie) => movie.schedule, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   movie: Movie;
 
-  @OneToMany(() => Session, (session) => session.id, {
+  @OneToMany(() => Session, (session) => session.schedule, {
     onDelete: 'CASCADE',
     cascade: true,
   })

@@ -13,14 +13,18 @@ export class RoomService {
 
   async getAll(): Promise<Room[]> {
     try {
-      return await this.roomRepository.getAll();
+      return await this.roomRepository.getAll({
+        relations: ['cinema', 'sessions'],
+      });
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async findById(id: string): Promise<Room> {
-    const room = await this.roomRepository.getById(id);
+  async getById(id: string): Promise<Room> {
+    const room = await this.roomRepository.getById(id, {
+      relations: ['cinema'],
+    });
 
     if (!room) {
       throw new HttpException('Room not found', HttpStatus.NOT_FOUND);
@@ -44,7 +48,7 @@ export class RoomService {
   }
 
   async deleteRoom(id: string): Promise<boolean> {
-    await this.findById(id);
+    await this.getById(id);
 
     await this.roomRepository.delete(id);
 

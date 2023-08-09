@@ -8,6 +8,7 @@ export const ConfigPG: TypeOrmModuleOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
+  synchronize: true,
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   logging: ['error', 'warn'],
 };

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateSessionDto } from './dto/createSession.dto';
+import { FindManyOptions, Repository } from 'typeorm';
+import { CreateSessionDto, ISession } from './dto/createSession.dto';
 import { Session } from './entity/session.entity';
 
 @Injectable()
@@ -10,15 +10,18 @@ export class SessionRepository {
     @InjectRepository(Session) private sessionRepository: Repository<Session>,
   ) {}
 
-  async getAll() {
-    return await this.sessionRepository.find();
+  async getAll(options?: FindManyOptions<Session>) {
+    return await this.sessionRepository.find(options);
   }
 
-  async getById(id: string) {
-    return await this.sessionRepository.findOne({ where: { id: id } });
+  async getById(id: string, options?: FindManyOptions<Session>) {
+    return await this.sessionRepository.findOne({
+      where: { id: id },
+      ...options,
+    });
   }
 
-  async create(dto: CreateSessionDto) {
+  async create(dto: ISession) {
     return this.sessionRepository.create(dto);
   }
 

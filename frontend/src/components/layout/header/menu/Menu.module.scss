@@ -1,0 +1,37 @@
+.menu {
+  @apply col-span-3;
+
+  .list {
+    @apply flex items-center mx-auto;
+
+    .active {
+      @apply text-orange-300;
+    }
+
+    > nav {
+      @apply mx-auto;
+      > ul {
+        @apply flex items-center gap-28;
+        > li {
+          .feature {
+            @apply text-3xl;
+          }
+
+          > a {
+            @apply relative text-xl text-white;
+
+            &::after {
+              content: "";
+              @apply absolute left-0 -bottom-3 h-0.5 w-0
+             bg-orange-300 transition-all duration-300;
+            }
+
+            &:hover::after {
+              @apply w-full;
+            }
+          }
+        }
+      }
+    }
+  }
+}

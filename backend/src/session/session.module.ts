@@ -2,16 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionService } from './session.service';
 import { SessionController } from './session.controller';
-import { RoomModule } from '../room/room.module';
 import { Session } from './entity/session.entity';
-import { Room } from '../room/entity/room.entity';
 import { SessionRepository } from './session.repository';
-import { Ticket } from '../ticket/entity/ticket.entity';
+import { Schedule } from '../schedule/entity/schedule.entity';
+import { ScheduleRepository } from '../schedule/schedule.repository';
 
 @Module({
   controllers: [SessionController],
-  providers: [SessionService, SessionRepository],
-  exports: [SessionService],
-  imports: [TypeOrmModule.forFeature([Session, Room, Ticket]), RoomModule],
+  providers: [SessionService, SessionRepository, ScheduleRepository],
+  exports: [SessionService, SessionRepository],
+  imports: [TypeOrmModule.forFeature([Session, Schedule])],
 })
 export class SessionModule {}

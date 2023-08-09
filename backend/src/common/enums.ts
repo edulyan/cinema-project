@@ -6,7 +6,7 @@ export enum UserRole {
 
 export enum FileType {
   IMAGE = 'image',
-  VIDEO = 'video',
+  IMGVERT = 'imgVert',
   TRAILER = 'trailer',
 }
 
@@ -73,4 +73,10 @@ export enum AgeRating {
   PG13 = '12+',
   R = '16+',
   NC17 = '18+',
+}
+
+export enum CinemaSlug {
+  SERPUKHOVSKAYA = 'serpukhovskaya',
+  TAGANSKAYA = 'taganskaya',
+  LUBYANKA = 'lubyanka',
 }

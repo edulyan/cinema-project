@@ -1,0 +1,3 @@
+.home {
+  @apply mx-auto text-center mt-5 bg-zinc-600 text-white w-5/6;
+}

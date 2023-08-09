@@ -11,10 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
-import { User } from '../user/entity/user.entity';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -29,19 +26,19 @@ export class AuthController {
   ) {}
 
   @Post('/login')
-  @UsePipes(ValidationPipe)
+  // @UsePipes(ValidationPipe)
   async signIn(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const jwt = await this.authService.signIn(dto);
-    res.cookie('jwtToken', jwt, { httpOnly: true });
+    res.cookie('access_token', jwt, { httpOnly: true });
 
     return jwt;
   }
 
   @Post('/register')
-  @UsePipes(ValidationPipe)
+  // @UsePipes(ValidationPipe)
   async signUp(@Body() dto: RegisterDto) {
     return await this.authService.signUp(dto);
   }

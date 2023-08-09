@@ -1,4 +1,12 @@
+import { IsString } from 'class-validator';
+
 export class CreateSessionDto {
-  readonly sessionTime: Date;
-  readonly roomId: string;
+  @IsString()
+  readonly scheduleId: string;
+}
+
+export interface ISession {
+  startTime: Date;
+  endTime: Date;
+  scheduleId: string;
 }

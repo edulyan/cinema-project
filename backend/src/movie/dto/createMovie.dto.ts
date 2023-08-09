@@ -14,17 +14,14 @@ export class CreateMovieDto {
   @IsNumber()
   year: number;
 
+  @IsString()
+  slug: string;
+
   @IsEnum(AgeRating)
   ageRating: AgeRating;
 
   @IsString()
-  duration: string;
-
-  @IsString()
-  image: string;
-
-  @IsString()
-  trailer: string;
+  duration: number;
 
   @IsEnum(Country)
   countries: Country[];
